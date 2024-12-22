@@ -1,0 +1,201 @@
+{% extends "app/navbar.html" %} {% load static %} {% block content %}
+{% if already_solved %}
+  <!-- Show Results -->
+  {% include "app/feedback.html" %}
+{% else %}
+  {% if question.question_type == 'MC' %}
+    <form 
+      method="POST"  
+      class="flex flex-col space-y-9 w-full"  
+    >
+  {% elif question.question_type == 'YN' %}
+    <form 
+      method="POST"
+      class="flex flex-col space-y-9 w-full"
+    >
+  {% else %}
+    <div
+    class="flex justify-center items-center bg-slate-800 w-full py-6 px-4 rounded-2xl border border-gray-600"
+    >
+      <div class="flex flex-col space-y-6">
+        <div class="flex flex-col justify-center items-center space-y-3">
+          <div class="p-2 rounded-full bg-gray-900">
+            <img
+              src="{% static 'app/images/Confused.svg' %}"
+              alt="Icon"
+              class="w-10 h-10"
+            />
+          </div>
+          <div class="text-center">
+            <p class="text-zinc-300 font-bold text-xl">
+              It looks like there are no questions available for you today, try coming back tomorow.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+
+  {% if question %}
+    <input type="hidden" name="question_id" value="{{ question.id }}">
+    {% csrf_token %}
+    <div
+      class="flex justify-center items-center bg-slate-800 w-full py-6 px-4 rounded-2xl border border-gray-600"
+    >
+      <div class="flex flex-col space-y-6">
+        <div class="flex flex-col justify-center items-center space-y-2">   
+          {% comment %} Icon start {% endcomment %}
+          <div class="p-2 rounded-full bg-gray-900">
+            <img
+              src="{% static 'app/images/Brain.svg' %}"
+              alt="Icon"
+              class="w-10 h-10"
+            />
+          </div>
+          {% comment %} Icon end {% endcomment %}
+
+          {% comment %} Text start {% endcomment %}
+          <div class="text-center">
+            <p class="text-zinc-300 font-bold text-xl">
+              {{ question.text }}
+            </p>
+          </div>
+          {% comment %} Text end {% endcomment %}
+        </div>
+
+        {% comment %} Form start {% endcomment %}
+        <div class="flex justify-center items-center">
+          <div class="inline-block w-auto">
+            <div class="grid grid-cols-2 auto-cols-auto gap-2 text-md font-semibold">
+
+              {% comment %} MultipleChoiceQuestion components start {% endcomment %}
+              {% if question.question_type == 'MC' %}
+              <!-- Option A -->
+              <div class="">
+                <input
+                  type="radio"
+                  id="option-a"
+                  name="selected_option"
+                  value="A"
+                  class="hidden peer"
+                  required
+                />
+                <label
+                  for="option-a"
+                  class="flex items-center justify-center px-6 py-3 border-2 rounded-l-3xl rounded-r-xl border-slate-600 cursor-pointer hover:text-gray-300 peer-checked:text-blue-500 peer-checked:border-blue-600 text-gray-400 bg-slate-800 hover:bg-slate-600"
+                >
+                  <div class="whitespace-nowrap">{{ question_subclass.option_a }}</div>
+                </label>
+              </div>
+          
+              <!-- Option B -->
+              <div class="">
+                <input
+                type="radio"
+                id="option-b"
+                name="selected_option"
+                value="B"
+                class="hidden peer"
+                />
+                <label
+                  for="option-b"
+                  class="flex items-center justify-center px-6 py-3 border-2 rounded-l-xl rounded-r-3xl border-slate-600 cursor-pointer hover:text-gray-300 peer-checked:text-blue-500 peer-checked:border-blue-600 text-gray-400 bg-slate-800 hover:bg-slate-600"
+                >
+                  <div class="whitespace-nowrap">{{ question_subclass.option_b }}</div>
+                </label>
+              </div>
+          
+              <!-- Option C -->
+              <div class="">
+                <input
+                type="radio"
+                id="option-c"
+                name="selected_option"
+                value="C"
+                class="hidden peer"
+                />
+                <label
+                  for="option-c"
+                  class="flex items-center justify-center px-6 py-3 border-2 rounded-l-3xl rounded-r-xl border-slate-600 cursor-pointer hover:text-gray-300 peer-checked:text-blue-500 peer-checked:border-blue-600 text-gray-400 bg-slate-800 hover:bg-slate-600"
+                >
+                  <div class="whitespace-nowrap">{{ question_subclass.option_c }}</div>
+                </label>
+              </div>
+          
+              <!-- Option D -->
+              <div class="">
+                <input
+                type="radio"
+                id="option-d"
+                name="selected_option"
+                value="D"
+                class="hidden peer"
+                />
+                <label
+                  for="option-d"
+                  class="flex items-center justify-center px-6 py-3 border-2 rounded-l-xl rounded-r-3xl border-slate-600 cursor-pointer hover:text-gray-300 peer-checked:text-blue-500 peer-checked:border-blue-600 text-gray-400 bg-slate-800 hover:bg-slate-600"
+                >
+                  <div class="whitespace-nowrap">{{ question_subclass.option_d }}</div>
+                </label>     
+              </div>
+              {% comment %} MultipleChoiceQuestion components end {% endcomment %}
+
+              {% comment %} YesNoQuestion components start {% endcomment %}
+              {% elif question.question_type == 'YN' %}
+              <!-- Option True -->
+              <div class="">
+                <input
+                  type="radio"
+                  id="option-a"
+                  name="selected_option"
+                  value="True"
+                  class="hidden peer"
+                  required
+                />
+                <label
+                  for="option-a"
+                  class="flex items-center justify-center px-6 py-3 border-2 rounded-l-3xl rounded-r-xl border-slate-600 cursor-pointer hover:text-gray-300 peer-checked:text-blue-500 peer-checked:border-blue-600 text-gray-400 bg-slate-800 hover:bg-slate-600"
+                >
+                  <div class="whitespace-nowrap">True</div>
+                </label>
+              </div>
+          
+              <!-- Option False -->
+              <div class="">
+                <input
+                type="radio"
+                id="option-b"
+                name="selected_option"
+                value="False"
+                class="hidden peer"
+                />
+                <label
+                  for="option-b"
+                  class="flex items-center justify-center px-6 py-3 border-2 rounded-l-xl rounded-r-3xl border-slate-600 cursor-pointer hover:text-gray-300 peer-checked:text-blue-500 peer-checked:border-blue-600 text-gray-400 bg-slate-800 hover:bg-slate-600"
+                >
+                  <div class="whitespace-nowrap">False</div>
+                </label>
+              </div>
+              {% endif %}
+              {% comment %} YesNoQuestion components end {% endcomment %}
+            </div>
+          </div>
+        </div>
+        {% comment %} Form end {% endcomment %}
+      </div>
+    </div>
+    
+    {% comment %} Submit button start {% endcomment %}
+    <div class="flex justify-center items-center">
+      <button type="submit" class="text-white bg-blue-800 hover:bg-blue-900 font-medium rounded-full border-2 border-blue-600 text-sm p-5 text-center inline-flex items-center">
+        <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+        </svg>
+        <span class="sr-only">Icon description</span>
+      </button>
+    </div>
+    {% comment %} Submit button end {% endcomment %}
+  </form>
+  {% endif %}
+{% endif %}
+{% endblock %}

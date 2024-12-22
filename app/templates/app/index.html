@@ -1,0 +1,125 @@
+{% extends "app/base.html" %} {% load static %} {% block content %}
+<div class="flex h-screen bg-zinc-300">
+  <div class="flex-1"></div>
+
+  <div class="flex-1 flex flex-col justify-center items-center space-y-6">
+    <div class="flex flex-col justify-center items-center space-y-1">
+      <img
+        src="{% static 'app/images/LogoDark.png' %}"
+        alt="Your image description"
+        class="w-32 h-32"
+      />
+      <h1 class="text-4xl font-bold">Quiz Daily</h1>
+      <p class="text-2xl text-center">{{content.subtitle}}</p>
+    </div>
+
+    {% if user.is_authenticated %}
+    <a
+        href="{% url nav_links.quiz %}"
+        class="bg-zinc-950 hover:bg-zinc-900 text-white font-bold py-2 px-4 rounded-full text-center w-56"
+        >{{content.play}}</a
+    >
+    {% else %}
+    <div class="flex flex-row justify-center items-center space-x-2">
+      <a
+        href="{% url nav_links.quiz %}"
+        class="hover:bg-zinc-200 font-bold py-2 px-4 rounded-full border-2 border-black text-center w-40"
+        >{{content.guest}}</a
+      >
+      <a
+        href="{% url 'register' %}"
+        class="bg-zinc-950 hover:bg-zinc-900 text-white font-bold py-2 px-4 rounded-full text-center w-40"
+        >{{content.login}}</a
+      >
+    </div>
+    {% endif %}
+
+    <div class="flex flex-col justify-center items-center">
+      <p class="text-md font-semibold">{{ context.date|date:"F j, Y" }}</p>
+      <p class="text-md">Quiz No. 1</p>
+    </div>
+
+    <div class="absolute bottom-0 p-6">
+      <div class="relative flex flex-row space-x-2">
+        {% comment %} Croatia language option {% endcomment %}
+        <form
+          action="{% url 'change_language' 'cro' %}"
+          method="post"
+          class="{% if request.session.language == 'cro' %} border-black bg-zinc-950 {% else %} hover:bg-zinc-200 border-black {% endif %} flex flex-row border-2 rounded-full p-2 space-x-1"
+        >
+          {% csrf_token %}
+          <button
+            type="submit"
+            class="flex flex-row items-center space-x-1"
+          >
+            <img
+              src="{% static 'app/images/CroIcon.svg' %}"
+              alt="Icon"
+              width="24"
+              height="24"
+            />
+            <p
+              class="font-bold {% if request.session.language == 'cro' %}text-white{% endif %}"
+            >
+              Cro
+            </p>
+          </button>
+        </form>
+
+        {% comment %} English language option {% endcomment %}
+        <form
+          action="{% url 'change_language' 'eng' %}"
+          method="post"
+          class="{% if request.session.language == 'eng' %} border-black bg-zinc-950 {% else %} hover:bg-zinc-200 border-black {% endif %} flex flex-row border-2 rounded-full p-2 space-x-1"
+        >
+          {% csrf_token %}
+          <button
+            type="submit"
+            class="flex flex-row items-center space-x-1"
+          >
+            <img
+              src="{% static 'app/images/EngIcon.svg' %}"
+              alt="Icon"
+              width="24"
+              height="24"
+            />
+            <p
+              class="font-bold {% if request.session.language == 'eng' %}text-white{% endif %}"
+            >
+              Eng
+            </p>
+          </button>
+        </form>
+
+        {% comment %} German language option {% endcomment %}
+        <form
+          action="{% url 'change_language' 'ger' %}"
+          method="post"
+          class="{% if request.session.language == 'ger' %} border-black bg-zinc-950 {% else %} hover:bg-zinc-200 border-black {% endif %} flex flex-row border-2 rounded-full p-2 space-x-1"
+        >
+          {% csrf_token %}
+          <button
+            type="submit"
+            class="flex flex-row items-center space-x-1"
+          >
+            <img
+              src="{% static 'app/images/GerIcon.svg' %}"
+              alt="Icon"
+              width="24"
+              height="24"
+            />
+            <p
+              class="font-bold {% if request.session.language == 'ger' %}text-white{% endif %}"
+            >
+              Ger
+            </p>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="flex-1"></div>
+</div>
+
+{% endblock %}

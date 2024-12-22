@@ -1,0 +1,170 @@
+
+<div
+  class="flex justify-center items-center bg-slate-800 w-full py-6 px-4 rounded-2xl border border-gray-600"
+>
+    <div class="flex flex-col space-y-6">
+        <div class="flex flex-col justify-center items-center space-y-3">
+            {% comment %} Icon start {% endcomment %}
+            {% if is_correct %}
+            <div class="p-2 rounded-full bg-green-900">
+                <svg 
+                  xmlns="http://www.w3.org/2000/svg" 
+                  width="32" 
+                  height="32" 
+                  viewBox="0 0 24 24"
+                  class="w-10 h-10 text-green-500"
+                >
+                    <path fill="currentColor" d="M22 14h-1c0-3.87-3.13-7-7-7h-1V5.73A2 2 0 1 0 10 4c0 .74.4 1.39 1 1.73V7h-1c-3.87 0-7 3.13-7 7H2c-.55 0-1 .45-1 1v3c0 .55.45 1 1 1h1v1a2 2 0 0 0 2 2h14c1.11 0 2-.89 2-2v-1h1c.55 0 1-.45 1-1v-3c0-.55-.45-1-1-1M9.79 16.5C9.4 15.62 8.53 15 7.5 15s-1.9.62-2.29 1.5c-.13-.31-.21-.64-.21-1a2.5 2.5 0 0 1 5 0c0 .36-.08.69-.21 1m9 0c-.39-.88-1.29-1.5-2.29-1.5s-1.9.62-2.29 1.5c-.13-.31-.21-.64-.21-1a2.5 2.5 0 0 1 5 0c0 .36-.08.69-.21 1"/>
+                </svg>
+            </div>
+            {% else %}
+            <div class="p-2 rounded-full bg-red-900">
+                <svg 
+                  xmlns="http://www.w3.org/2000/svg" 
+                  width="32" 
+                  height="32" 
+                  viewBox="0 0 24 24"
+                  class="w-10 h-10 text-red-500"
+                >
+                    <path fill="currentColor" d="M22 14h-1c0-3.87-3.13-7-7-7h-1V5.73A2 2 0 1 0 10 4c0 .74.4 1.39 1 1.73V7h-1c-3.87 0-7 3.13-7 7H2c-.55 0-1 .45-1 1v3c0 .55.45 1 1 1h1v1a2 2 0 0 0 2 2h14c1.11 0 2-.89 2-2v-1h1c.55 0 1-.45 1-1v-3c0-.55-.45-1-1-1M9.86 16.68l-1.18 1.18l-1.18-1.18l-1.18 1.18l-1.18-1.18l1.18-1.18l-1.18-1.18l1.18-1.18l1.18 1.18l1.18-1.18l1.18 1.18l-1.18 1.18zm9 0l-1.18 1.18l-1.18-1.18l-1.18 1.18l-1.18-1.18l1.18-1.18l-1.18-1.18l1.18-1.18l1.18 1.18l1.18-1.18l1.18 1.18l-1.18 1.18z"/>
+                </svg>
+            </div>
+            {% endif %}
+            {% comment %} Icon end {% endcomment %}
+
+            {% comment %} Text start {% endcomment %}
+            <div class="text-center">
+                <p class="text-zinc-300 font-bold text-xl">
+                    {{ question.text }}
+                </p>
+            </div>
+            {% comment %} Text end {% endcomment %}
+        </div>
+    
+
+        {% comment %} Form start {% endcomment %}
+        <div class="flex justify-center items-center">
+            <div class="inline-block w-auto">
+                <div class="grid grid-cols-2 auto-cols-auto gap-2 text-md font-semibold">
+                    {% comment %} MultipleChoiceQuestion components start {% endcomment %}
+                    {% if question.question_type == 'MC' %}
+                    <!-- Option A -->
+                    <div class="">
+                        <label
+                          for="option-a"
+                          {% if correct_answer == 'A' %}
+                          class="pointer-events-none cursor-not-allowed flex items-center justify-center px-6 py-3 border-2 rounded-l-3xl rounded-r-xl border-green-500 text-green-500 bg-green-900"
+                          {% elif correct_answer != selected_option and selected_option == 'A'%}
+                          class="pointer-events-none cursor-not-allowed flex items-center justify-center px-6 py-3 border-2 rounded-l-3xl rounded-r-xl border-red-500 text-red-500 bg-red-900"
+                          {% else %}
+                          class="pointer-events-none cursor-not-allowed flex items-center justify-center px-6 py-3 border-2 rounded-l-3xl rounded-r-xl border-slate-600 text-gray-400 bg-slate-800"
+                          {% endif %}
+                        >
+                            <div class="whitespace-nowrap">{{ question_subclass.option_a }}</div>
+                        </label>
+                    </div>
+                
+                    <!-- Option B -->
+                    <div class="">
+                        <label
+                          for="option-b"
+                          {% if correct_answer == 'B' %}
+                          class="pointer-events-none cursor-not-allowed flex items-center justify-center px-6 py-3 border-2 rounded-l-xl rounded-r-3xl border-green-500 text-green-500 bg-green-900"
+                          {% elif correct_answer != selected_option and selected_option == 'B'%}
+                          class="pointer-events-none cursor-not-allowed flex items-center justify-center px-6 py-3 border-2 rounded-l-xl rounded-r-3xl border-red-500 text-red-500 bg-red-900"
+                          {% else %}
+                          class="pointer-events-none cursor-not-allowed flex items-center justify-center px-6 py-3 border-2 rounded-l-xl rounded-r-3xl border-slate-600 text-gray-400 bg-slate-800"
+                          {% endif %}
+                        >
+                            <div class="whitespace-nowrap">{{ question_subclass.option_b }}</div>
+                        </label>
+                    </div>
+                
+                    <!-- Option C -->
+                    <div class="">
+                        <label
+                          for="option-c"
+                          {% if correct_answer == 'C' %}
+                          class="pointer-events-none cursor-not-allowed flex items-center justify-center px-6 py-3 border-2 rounded-l-3xl rounded-r-xl border-green-500 text-green-500 bg-green-900"
+                          {% elif correct_answer != selected_option and selected_option == 'C'%}
+                          class="pointer-events-none cursor-not-allowed flex items-center justify-center px-6 py-3 border-2 rounded-l-3xl rounded-r-xl border-red-500 text-red-500 bg-red-900"
+                          {% else %}
+                          class="pointer-events-none cursor-not-allowed flex items-center justify-center px-6 py-3 border-2 rounded-l-3xl rounded-r-xl border-slate-600 text-gray-400 bg-slate-800"
+                          {% endif %}
+                        >
+                            <div class="whitespace-nowrap">{{ question_subclass.option_c }}</div>
+                        </label>
+                    </div>
+                
+                    <!-- Option D -->
+                    <div class="">
+                        <label
+                          for="option-d"
+                          {% if correct_answer == 'D' %}
+                          class="pointer-events-none cursor-not-allowed flex items-center justify-center px-6 py-3 border-2 rounded-l-xl rounded-r-3xl border-green-500 text-green-500 bg-green-900"
+                          {% elif correct_answer != selected_option and selected_option == 'D'%}
+                          class="pointer-events-none cursor-not-allowed flex items-center justify-center px-6 py-3 border-2 rounded-l-xl rounded-r-3xl border-red-500 text-red-500 bg-red-900"
+                          {% else %}
+                          class="pointer-events-none cursor-not-allowed flex items-center justify-center px-6 py-3 border-2 rounded-l-xl rounded-r-3xl border-slate-600 text-gray-400 bg-slate-800"
+                          {% endif %}
+                          >
+                            <div class="whitespace-nowrap">{{ question_subclass.option_d }}</div>
+                        </label>     
+                    </div>
+                    {% comment %} MultipleChoiceQuestion components end {% endcomment %}
+
+                    {% comment %} YesNoQuestion components start {% endcomment %}
+                    {% else %}
+                    <!-- Option True -->
+                    <div class="">
+                        <label
+                          for="option-a"
+                          {% if correct_answer == 'True' %}
+                          class="pointer-events-none cursor-not-allowed flex items-center justify-center px-6 py-3 border-2 rounded-l-3xl rounded-r-xl border-green-500 text-green-500 bg-green-900"
+                          {% elif correct_answer != selected_option and selected_option == 'True'%}
+                          class="pointer-events-none cursor-not-allowed flex items-center justify-center px-6 py-3 border-2 rounded-l-3xl rounded-r-xl border-red-500 text-red-500 bg-red-900"
+                          {% else %}
+                          class="pointer-events-none cursor-not-allowed flex items-center justify-center px-6 py-3 border-2 rounded-l-3xl rounded-r-xl border-slate-600 text-gray-400 bg-slate-800"
+                          {% endif %}
+                          >
+                            <div class="whitespace-nowrap">True</div>
+                        </label>
+                    </div>
+                
+                    <!-- Option False -->
+                    <div class="">
+                        <label
+                          for="option-b"
+                          {% if correct_answer == 'False' %}
+                          class="pointer-events-none cursor-not-allowed flex items-center justify-center px-6 py-3 border-2 rounded-l-xl rounded-r-3xl border-green-500 text-green-500 bg-green-900"
+                          {% elif correct_answer != selected_option and selected_option == 'False'%}
+                          class="pointer-events-none cursor-not-allowed flex items-center justify-center px-6 py-3 border-2 rounded-l-xl rounded-r-3xl border-red-500 text-red-500 bg-red-900"
+                          {% else %}
+                          class="pointer-events-none cursor-not-allowed flex items-center justify-center px-6 py-3 border-2 rounded-l-xl rounded-r-3xl border-slate-600 text-gray-400 bg-slate-800"
+                          {% endif %}
+                        >
+                            <div class="whitespace-nowrap">False</div>
+                        </label>
+                    </div>
+                    {% endif %}
+                    {% comment %} YesNoQuestion components end {% endcomment %}
+                </div>
+            </div>
+        </div>
+        {% comment %} Form end {% endcomment %}
+    </div>
+</div>
+<div
+  class="flex flex-col justify-center items-center bg-slate-800 w-full py-4 px-4 rounded-2xl border border-gray-600 mt-6 "
+>
+<p class="text-center text-zinc-300 font-semibold text-lg">
+    <h2 class="text-white text-xl font-bold pb-1">Quiz Results</h2>
+    {% if is_correct %}
+    <p class="text-green-400">Your answer was correct! Well done.</p>
+    {% else %}
+    <p class="text-red-400">Sadly, your answer was incorrect.</p>
+    {% endif %}
+    <p class="text-gray-300">Time until the next question: <span id="countdown">00:00:00</span></p>
+
+</div>
+

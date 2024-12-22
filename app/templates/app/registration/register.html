@@ -1,0 +1,60 @@
+{% extends 'app/base.html' %} 
+{% load widget_tweaks %}
+{% block extrahead %} 
+    <script src="https://cdn.tailwindcss.com"></script>
+{% endblock extrahead %}
+{% block content %}
+
+    {% if user.is_authenticated %}
+        <div class="flex flex-col items-center mt-10">
+            <p class="text-lg text-gray-700">Your account doesn't have access to this page. You are already logged in.</p>
+            <a href="{% url 'logout' %}" class="mt-4 text-blue-500 hover:underline">Logout</a>
+        </div>
+    {% else %}
+    <div class="text-center">
+        <h1 class="text-3xl font-bold mt-10 mb-6">Registration</h1>
+    </div>
+
+    <div class="container mx-auto px-6 py-6">
+        <div class="max-w-md mx-auto">
+
+            <form class="bg-white shadow-md rounded px-8 py-6" method="post">
+                {% csrf_token %}
+
+                {% if form.non_field_errors %}
+                <div class="mb-4">
+                    <div class="bg-red-100 text-red-700 border border-red-400 px-4 py-3 rounded text-center">
+                        {% for error in form.non_field_errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+
+                {% for field in form.visible_fields %}
+                    {% if form.is_bound %}
+                        <div class="mb-4">
+                            {% render_field field class="form-input border-red-500 w-full px-4 py-2 rounded focus:ring focus:ring-red-300" placeholder=field.label %}
+                            {% for error in field.errors %}
+                                <p class="text-red-500 text-xs italic">{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="mb-4">
+                            {% render_field field class="form-input border-gray-300 w-full px-4 py-2 rounded focus:ring focus:ring-blue-300" placeholder=field.label %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+
+                <button class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mt-4" type="submit">
+                    Register
+                </button>
+                <hr class="my-6 border-gray-300">
+                <p class="text-sm text-gray-600 text-center">By clicking Register, you agree to the terms of use.</p>
+            </form>
+
+        </div>
+    </div>
+    {% endif %}
+
+{% endblock %}

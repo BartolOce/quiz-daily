@@ -1,0 +1,132 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1"
+    />
+
+    <title>Quiz Daily</title>
+
+    {% block extrahead %} {% endblock extrahead %}
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+          const nextDay = new Date("{{ next_day }}"); // Get next day timestamp from context
+          const countdownElement = document.getElementById("countdown");
+
+          function updateCountdown() {
+              const now = new Date();
+              const timeDiff = nextDay - now; // Time difference in milliseconds
+
+              if (timeDiff <= 0) {
+                  countdownElement.textContent = "00:00:00";
+                  clearInterval(interval);
+                  return;
+              }
+
+              const hours = Math.floor(timeDiff / (1000 * 60 * 60));
+              const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+              const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
+
+              countdownElement.textContent = `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+          }
+
+          const interval = setInterval(updateCountdown, 1000); // Update every second
+          updateCountdown(); // Run once immediately
+      });
+  </script>
+  </head>
+
+  <body>
+    <main>
+      <div class="bg-gray-900 h-screen flex">
+        <nav class="flex flex-col fixed w-full z-10">
+          <div
+            class="flex justify-center items-center bg-slate-700 border-y border-gray-600 py-2"
+          >
+            <div class="flex flex-row space-x-3">
+              <div
+                class="bg-blue-200 rounded-lg px-2 flex justify-center items-center"
+              >
+                <p class="font-semibold text-blue-900 text-sm">No. 357</p>
+              </div>
+              <p class="font-semibold text-white">{{ date|date:"F j, Y" }}</p>
+            </div>
+          </div>
+
+          <div
+            class="border-y border-gray-600 bg-slate-800 flex flex-row justify-between px-40"
+          >
+            <div class="flex flex-row justify-center items-center space-x-2">
+              <img
+                src="{% static 'app/images/LogoLight.png' %}"
+                alt="Logo"
+                width="32"
+                height="32"
+                class="w-9 h-9"
+              />
+              <p class="text-zinc-300 font-bold text-2xl py-5">QUIZ DAILY</p>
+            </div>
+
+            <div class="flex flex-row">
+              <a
+                href=""
+                class="hover:bg-gray-600 flex items-center justify-center px-3"
+                ><img
+                  src="{% static 'app/images/BulbIcon.svg' %}"
+                  alt="Icon"
+                  width="32"
+                  height="32"
+              /></a>
+              <a
+                href=""
+                class="hover:bg-gray-600 flex items-center justify-center px-3"
+                ><img
+                  src="{% static 'app/images/ChartIcon.svg' %}"
+                  alt="Icon"
+                  width="32"
+                  height="32"
+              /></a>
+              <a
+                href=""
+                class="hover:bg-gray-600 flex items-center justify-center px-3"
+                ><img
+                  src="{% static 'app/images/QuestionIcon.svg' %}"
+                  alt="Icon"
+                  width="32"
+                  height="32"
+              /></a>
+              <a
+                href=""
+                class="hover:bg-gray-600 flex items-center justify-center px-3"
+                ><img
+                  src="{% static 'app/images/ProfilIcon.svg' %}"
+                  alt="Icon"
+                  width="32"
+                  height="32"
+              /></a>
+              <a
+                href="{% url 'logout' %}"
+                class="bg-blue-700 hover:bg-blue-900 flex items-center justify-center px-4 my-4 ml-3 text-white font-semibold rounded-lg"
+                >Login to Account</a
+              >
+            </div>
+          </div>
+        </nav>
+
+        <div class="flex-1"></div>
+        <div class="flex-1">
+          <div class="flex flex-col justify-center items-center min-h-screen">
+            {% block content %} {% endblock content %}
+          </div>
+        </div>
+        <div class="flex-1"></div>
+      </div>
+    </main>
+  </body>
+</html>
